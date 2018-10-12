@@ -13,7 +13,7 @@ public class NodeBuilder {
 		// Initializing node variables
 		String activityName;
 		int duration;
-		ArrayList<String> dependencies = new ArrayList<String>();
+		ArrayList<String> parents = new ArrayList<String>();
 		
 		String input = "";
 		
@@ -45,22 +45,21 @@ public class NodeBuilder {
 			
 			
 			while (s.hasNext()) {
-				dependencies.add(s.next());
-			}
-			
-			if(dependencies.isEmpty()) {
-				dependencies.add("1");
+				parents.add(s.next());
 			}
 			
 			if(!activityName.equals("stop")) {
-				Node myNode = new Node(activityName, duration, dependencies);
+				Node myNode = new Node(activityName, duration, parents);
 				nodes.add(myNode);
 			} else {
 				stop = true;
 			}
 			
-			System.out.println(dependencies.size());
+			System.out.println(parents.size());
 			System.out.println(nodes.size());
+			
+			//reset parents ArrayList
+			parents.clear();
 			
 			//Closing Scanner
 			s.close();
@@ -69,9 +68,15 @@ public class NodeBuilder {
 			
 		} while (!stop);
 		
+		for(Node node : nodes) {
+			node.setEnd( nodes );
+		}
+		
 		for(int x=0;x<nodes.size();x++) {
 			System.out.println(nodes.get(x));
 		}
+		
+		NetworkBuilder.networkBuilder(nodes);
 		
 		kb.close();
 	}
