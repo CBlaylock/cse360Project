@@ -26,21 +26,29 @@ public class NetworkBuilder {
 				
 				//Getting the top myStack
 				Node top = myStack.get( myStack.size()-1 );
+				//System.out.println("top:" + top.getActivityName());
 				
 				//If the current top of myStack is a starter
 				if( starters.contains( top ) ) {
 				
-					// Print stack
-					System.out.println( myStack );
+					//Print stack
+					int totalDuration = 0;
+					for(int i = myStack.size()-1;i>=0;i--) {
+						System.out.print(myStack.get(i).getActivityName() + ":" + myStack.get(i).getDuration() + " ");
+						totalDuration += myStack.get(i).getDuration();
+					}
+					System.out.print("Total Duration: " + totalDuration);
+					System.out.println();
 					
-					// Pop because we are the start
+					//Pop because we are the start
 					lastPopped = top;
 					myStack.remove(top);
 				} else {
 					String nextName = grabNext(top,lastPopped);
+					//System.out.println("nextName:" + nextName);
 					
 					// Because at the end of the children
-					if(nextName.isEmpty()) {
+					if(nextName == null) {
 						
 						// Pop ourselves because no children
 						lastPopped = top;
@@ -52,7 +60,6 @@ public class NetworkBuilder {
 						myStack.add(nextNode);
 						
 					}
-					
 				}
 			}
 		}

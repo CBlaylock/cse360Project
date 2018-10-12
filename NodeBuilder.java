@@ -33,13 +33,13 @@ public class NodeBuilder {
 			//Set node variables with user input
 			if(s.hasNext()) {
 				activityName = s.next();
-				System.out.println(activityName);
+				//System.out.println(activityName);
 			} else
 				activityName = "Activity " + i;
 			
 			if(s.hasNext()) {
 				duration = s.nextInt();
-				System.out.println(duration);
+				//System.out.println(duration);
 			} else
 				duration = 0;
 			
@@ -55,8 +55,8 @@ public class NodeBuilder {
 				stop = true;
 			}
 			
-			System.out.println(parents.size());
-			System.out.println(nodes.size());
+			//System.out.println(parents.size());
+			//System.out.println(nodes.size());
 			
 			//reset parents ArrayList
 			parents.clear();
@@ -72,9 +72,9 @@ public class NodeBuilder {
 			node.setEnd( nodes );
 		}
 		
-		for(int x=0;x<nodes.size();x++) {
-			System.out.println(nodes.get(x));
-		}
+//		for(int x=0;x<nodes.size();x++) {
+//			System.out.println(nodes.get(x));
+//		}
 		
 		NetworkBuilder.networkBuilder(nodes);
 		
