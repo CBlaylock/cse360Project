@@ -6,7 +6,9 @@ public class NetworkBuilder {
 		ArrayList<Node> myStack = new ArrayList<Node>();
 		ArrayList<Node> starters = new ArrayList<Node>();
 		ArrayList<Node> enders = new ArrayList<Node>();
+		ArrayList<Path> paths = new ArrayList<Path>();
 		Node lastPopped = null;
+		StringBuffer tempNetwork = new StringBuffer();
 		
 		//Finding starting nodes
 		for(Node node : nodes) {
@@ -33,19 +35,27 @@ public class NetworkBuilder {
 				
 					//Print stack
 					int totalDuration = 0;
+					tempNetwork.delete(0, tempNetwork.length());
 					for(int i = myStack.size()-1;i>=0;i--) {
-						System.out.print(myStack.get(i).getActivityName() + ":" + myStack.get(i).getDuration() + " ");
+						tempNetwork.append(myStack.get(i).getActivityName() + ":" + myStack.get(i).getDuration() + " ");
 						totalDuration += myStack.get(i).getDuration();
 					}
-					System.out.print("Total Duration: " + totalDuration);
-					System.out.println();
+					tempNetwork.append("Total Duration: " + totalDuration);
+					String temp = tempNetwork.toString();
+					
+					Path myPath = new Path(temp,totalDuration);
+					paths.add(myPath);
 					
 					//Pop because we are the start
 					lastPopped = top;
 					myStack.remove(top);
 				} else {
 					String nextName = grabNext(top,lastPopped);
-					//System.out.println("nextName:" + nextName);
+					for(int i=0;i<myStack.size();i++) {
+						if(myStack.get(i).getActivityName().equals(nextName)) {
+							System.out.println("ERROR: CYCLE PRESENT");
+						}
+					}
 					
 					// Because at the end of the children
 					if(nextName == null) {
@@ -63,6 +73,24 @@ public class NetworkBuilder {
 				}
 			}
 		}
+		
+		while(!paths.isEmpty()) {
+			int largestDuration = 0;
+			int largestIndex = -1;
+			String largestContent = "";
+			//choose largest path then next largest etc...
+			for(int i=0;i<paths.size();i++) {
+				if(paths.get(i).getTotalDuration()>largestDuration) {
+					largestDuration = paths.get(i).getTotalDuration();
+					largestContent = paths.get(i).getPathContent();
+					largestIndex = i;
+				}	
+			}
+			System.out.print(largestContent);
+			System.out.println();
+			paths.remove(largestIndex);
+		}
+		
 	}
 	
 	static String grabNext(Node top, Node lastPopped) {
