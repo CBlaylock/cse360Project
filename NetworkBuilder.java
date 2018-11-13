@@ -51,11 +51,11 @@ public class NetworkBuilder {
 					myStack.remove(top);
 				} else {
 					String nextName = grabNext(top,lastPopped);
-					for(int i=0;i<myStack.size();i++) {
-						if(myStack.get(i).getActivityName().equals(nextName)) {
-							System.out.println("ERROR: CYCLE PRESENT");
-						}
-					}
+//					for(int i=0;i<myStack.size();i++) {
+//						if(myStack.get(i).getActivityName().equals(nextName)) {
+//							System.out.println("ERROR: CYCLE PRESENT");
+//						}
+//					}
 					
 					// Because at the end of the children
 					if(nextName == null) {
@@ -73,7 +73,7 @@ public class NetworkBuilder {
 				}
 			}
 		}
-		
+		int flag = 0;
 		while(!paths.isEmpty()) {
 			int largestDuration = 0;
 			int largestIndex = -1;
@@ -86,9 +86,14 @@ public class NetworkBuilder {
 					largestIndex = i;
 				}	
 			}
+			flag = 1;
 			System.out.print(largestContent);
 			System.out.println();
 			paths.remove(largestIndex);
+		}
+		if(flag==0) {
+			System.out.println("ERROR: One or more cycles are present. \nPlease reset and enter a new sequence of nodes that does not contain cycles.");
+			System.exit(0);
 		}
 		
 	}
